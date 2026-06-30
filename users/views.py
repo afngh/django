@@ -6,6 +6,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.contrib.auth.hashers import make_password, check_password
 
+from django_framework_simplejwt.tokens import RefreshToken
+
 @api_view(['POST'])
 def register(request):
     if request.method == 'POST':
@@ -52,11 +54,18 @@ def login(request):
                 )
 
                 if check_password(password, user.password):
+
+                    refresh = RefreshToken.for_user(user)
+
                     return Response({
                         "success" : True,
-                        "status" : 201,
+                        "status" : 200,
                         "username" : user.username,
-                        "message" : "login successful"
+                        "message" : "login successful",
+                        "tokens":{
+                            "refresh": str(refresh),
+                            "access": str(refresh.access_token)
+                        }
                     },status=status.HTTP_201_CREATED)
                 else:
                     return Response({

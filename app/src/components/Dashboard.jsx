@@ -4,7 +4,7 @@ function Dashboard(){
     return (
     <React.Fragment>
         <h1>
-            USER DASHBOARD
+            Hola {localStorage.getItem('username')}, Welcome!
         </h1>
     </React.Fragment>
     );

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import Users
 from rest_framework import status
-from .serializers import UserSerializer, LoginSerializer
+from .serializers import UserSerializer, DefaultSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.contrib.auth.hashers import make_password, check_password
@@ -40,7 +40,7 @@ def register(request):
 @api_view(['POST'])
 def login(request):
     if request.method == 'POST':
-        serializer = LoginSerializer(data=request.data)
+        serializer = DefaultSerializer(data=request.data)
 
         if serializer.is_valid():
             username = serializer.validated_data['username']

@@ -7,8 +7,8 @@ function Home(){
                 Home Page
             </h1>
             <br />
-            <a href="login/">login</a>
-            <a href="register/">register</a>
+            <a href="login/">LOGIN</a><br />
+            <a href="register/">REGISTER</a>
         </React.Fragment>
     )
 }

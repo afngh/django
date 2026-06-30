@@ -6,6 +6,6 @@ class UserSerializer(serializers.ModelSerializer):
         model = Users
         fields = "__all__"
 
-class LoginSerializer(serializers.Serializer):
+class DefaultSerializer(serializers.Serializer):
     username = serializers.CharField(required=True)
     password = serializers.CharField(required=True)

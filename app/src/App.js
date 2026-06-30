@@ -1,9 +1,9 @@
-import logo from './logo.svg';
 import { createBrowserRouter, RouterProvider} from 'react-router-dom'
 import './App.css';
 import Home from './components/Home'
 import Login from './components/Login'
 import Regsiter from './components/Register'
+import Dashboard from './components/Dashboard';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +17,10 @@ const router = createBrowserRouter([
   {
     path: '/register',
     element: <Regsiter />
+  },
+  {
+    path: '/dashboard',
+    element: <Dashboard />
   }
 ])
 

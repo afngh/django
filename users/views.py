@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import Users
 from rest_framework import status
-from .serializers import UserSerializer
+from .serializers import UserSerializer, LoginSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.contrib.auth.hashers import make_password, check_password
@@ -12,42 +12,35 @@ def register(request):
         serializer = UserSerializer(data=request.data)
 
         if serializer.is_valid():
-            username = serializer.validated_data['username']
             password = serializer.validated_data['password']
-            
-            try:
-                user = Users.objects.get(
-                    username=username,
-                )
-            except Exception as e:
-                return Response({
-                    "success":False,
-                    "status":401,
-                    "message": "inavlid username or password"
-                }, status=status.HTTP_401_UNAUTHORIZED)
+
+            hashed_password = make_password(password)
+
+            user = serializer.save(password=hashed_password)
+
             return Response({
                 "success" : True,
                 "status" : 201,
                 "username" : user.username,
-                "message": "login successful"
+                "message" : "registered successfully"
             },status=status.HTTP_201_CREATED)
         
         return Response({
             "success" : False,
             "status" : 403,
-            "message":"invalid request body"
+            "message" : "invalid data"
         }, status=status.HTTP_403_FORBIDDEN)
     else:
         return Response({
             "success" : False,
-            "status" : 405,
-            "message" : f"invalid method required POST but got {request.method}"
-        }, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+            "status" : 400,
+            "message" : f"invalid request expected POST but got {request.method}"
+        }, status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['POST'])
 def login(request):
     if request.method == 'POST':
-        serializer = UserSerializer(data=request.data)
+        serializer = LoginSerializer(data=request.data)
 
         if serializer.is_valid():
             username = serializer.validated_data['username']
@@ -79,10 +72,13 @@ def login(request):
                     },status=status.HTTP_401_UNAUTHORIZED)
         return Response({
             "success" : False,
-            "status" : 403
+            "status" : 403,
+            "message": "invalid data",
         }, status=status.HTTP_403_FORBIDDEN)
     else:
         return Response({
             "success" : False,
-            "status" : 400
+            "status" : 400,
+            "message" : f"invalid request expected POST but got {request.method}"
+
         }, status=status.HTTP_400_BAD_REQUEST)

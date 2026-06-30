@@ -3,10 +3,11 @@ from .models import Users
 from rest_framework import status
 from .serializers import UserSerializer, DefaultSerializer
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from django.contrib.auth.hashers import make_password, check_password
-
-from django_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 @api_view(['POST'])
 def register(request):
@@ -91,3 +92,14 @@ def login(request):
             "message" : f"invalid request expected POST but got {request.method}"
 
         }, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def getall(request):
+    users = Users.objects.values('id','username')
+    
+    return Response({
+        "success": True,
+        "data": list(users)}
+    )

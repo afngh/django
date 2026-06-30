@@ -4,6 +4,7 @@ import Home from './components/Home'
 import Login from './components/Login'
 import Regsiter from './components/Register'
 import Dashboard from './components/Dashboard';
+import Users from './components/GetUsers';
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: '/dashboard',
     element: <Dashboard />
+  },
+  {
+    path: '/getall',
+    element: <Users />
   }
 ])
 

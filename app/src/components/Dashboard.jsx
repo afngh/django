@@ -6,6 +6,7 @@ function Dashboard(){
         <h1>
             Hola {localStorage.getItem('username')}, Welcome!
         </h1>
+        <a href="../getall/">GETUSERS</a>
     </React.Fragment>
     );
 }

@@ -31,6 +31,8 @@ function Login(){
                 SetMessage(response.data.message)
                 setTimeout(() => {
                     localStorage.setItem('username',response.data.username)
+                    localStorage.setItem('access',response.data.tokens.access)
+                    localStorage.setItem('refresh',response.data.tokens.refresh)
                     navigate('../dashboard/')
                 }, 3);
             }else{

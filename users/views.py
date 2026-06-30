@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Users
+from django.contrib.auth.models import User
 from rest_framework import status
 from .serializers import UserSerializer, DefaultSerializer
 from rest_framework.response import Response
@@ -50,7 +50,7 @@ def login(request):
             password = serializer.validated_data['password']
             
             try:
-                user = Users.objects.get(
+                user = User.objects.get(
                     username=username
                 )
 
@@ -97,7 +97,7 @@ def login(request):
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def getall(request):
-    users = Users.objects.values('id','username')
+    users = User.objects.values('id','username')
     
     return Response({
         "success": True,

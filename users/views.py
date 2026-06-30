@@ -21,3 +21,11 @@ def register(request):
             return Response({
                 "status":"success"
             },status=status.HTTP_201_CREATED)
+        
+        return Response({
+            "status":"failed"
+        }, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response({
+            "status":"failed"
+        }, status=status.HTTP_401_UNAUTHORIZED)

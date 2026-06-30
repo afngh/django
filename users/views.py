@@ -12,20 +12,24 @@ def register(request):
         serializer = UserSerializer(data=request.data)
 
         if serializer.is_valid():
-            password = serializer.cleaned_data['password']
+            password = serializer.validated_data['password']
 
             hashed_password = make_password(password)
 
             user = serializer.save(password=hashed_password)
 
             return Response({
-                "status":"success"
+                "success" : True,
+                "status" : 201,
+                "username" : user.username
             },status=status.HTTP_201_CREATED)
         
         return Response({
-            "status":"failed"
-        }, status=status.HTTP_400_BAD_REQUEST)
+            "success" : False,
+            "status" : 403
+        }, status=status.HTTP_403_FORBIDDEN)
     else:
         return Response({
-            "status":"failed"
-        }, status=status.HTTP_401_UNAUTHORIZED)
+            "success" : False,
+            "status" : 400
+        }, status=status.HTTP_400_BAD_REQUEST)
